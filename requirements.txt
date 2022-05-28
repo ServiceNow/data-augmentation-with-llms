@@ -1,0 +1,17 @@
+datasets==1.18.4
+GPUtil==1.4.0
+haven-ai @ git+https://github.com/haven-ai/haven-ai
+huggingface-hub==0.0.19
+matplotlib==3.4.3
+nltk
+numpy
+openai==0.15.0
+pandas==1.3.3
+scikit-image==0.18.3
+scikit-learn==1.0
+seaborn==0.11.2
+sentencepiece==0.1.96
+torch==1.9.1
+transformers==4.18.0
+wandb==0.12.4
+pydantic==1.8.2
