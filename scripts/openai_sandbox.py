@@ -1,21 +1,25 @@
 from utils.data_utils.augment_slices import openai_complete
 import argparse
 
-K = 10
-ENGINE = "curie"
-DATASET_NAME = "clinc_oos"
-INTENT_1, INTENT_2 = "user_name", "timer"
-
 
 def main(args):
     if args.examples is None:
-        return ValueError("No seed examples provided.")
-    lines1 = args.examples
+        raise ValueError("No seed examples provided.")
+    if args.intent_name is None:
+        raise ValueError("Please provide the name of a seed intent")
+    if args.gpt_engine is None:
+        print("No engine provided. Using ada...")
+        ENGINE = "ada"
+    else:
+        ENGINE = args.gpt_engine
+
+    intent = args.intent_name
+    lines = args.examples
     k = len(args.examples)
 
     print("----Default method----")
-    prompt = f"The following sentences belong to the same category {INTENT_1}:\n"
-    prompt += "\n".join([f"Example {i+1}: {l}" for i, l in enumerate(lines1)])
+    prompt = f"The following sentences belong to the same category {intent}:\n"
+    prompt += "\n".join([f"Example {i+1}: {l}" for i, l in enumerate(lines)])
     prompt += "\n"
     prompt += f"Example {k+1}:"
     print(prompt)
@@ -40,6 +44,16 @@ if __name__ == "__main__":
         nargs="+",
         default=None,
         help="Seed examples for prompting GPT",
+    )
+    parser.add_argument(
+        "-i", "--intent_name", default=None, type=str, help="Name of the seed intent"
+    )
+
+    parser.add_argument(
+        "-g",
+        "--gpt_engine",
+        default=None,
+        help="GPT engine to use for augmentation (ada/babbage/curie/davinci)",
     )
     args, unknown = parser.parse_known_args()
 
